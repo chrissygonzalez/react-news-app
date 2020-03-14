@@ -30,9 +30,16 @@ class ArticleList extends Component {
         })
     };
 
-    filterByTitle() {
+    handleChange = (text) => {
+        this.setState({
+            titleFilter: text
+        });
+        this.filterByTitle();
+    }
+
+    filterByTitle = () => {
         let filteredArticles = this.state.articles.filter(article => {
-            return article.includes(this.state.titleFilter);
+            return article.title.includes(this.state.titleFilter);
         });
         this.setState({
             articles: filteredArticles
@@ -47,7 +54,7 @@ class ArticleList extends Component {
         return (
             <>
                 <div className="m2">
-                    <TitleFilter />
+                    <TitleFilter onChange={this.handleChange} />
                     <SourceFilter />
                 </div>
                 <div className="flex flex-wrap">
