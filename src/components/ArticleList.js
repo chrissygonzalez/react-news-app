@@ -6,7 +6,9 @@ import SourceFilter from './SourceFilter';
 class ArticleList extends Component {
     state = { 
         articles: [],
-        titleFilter: ''
+        filteredArticles: [],
+        titleFilter: '',
+        sources: []
     };
 
     getNews() {
@@ -23,26 +25,30 @@ class ArticleList extends Component {
             return res;
         }).then(res => res.json())
         .then(data => {
-            console.log(data.articles);
+            let sources = data.articles.map(article => article.source.name);
+            let uniqueSources = sources.filter((val, index, self) => self.indexOf(val) === index);
+
             this.setState({
-                articles: data.articles
+                articles: data.articles,
+                filteredArticles: data.articles,
+                sources: uniqueSources,
             });
         })
     };
 
     handleChange = (text) => {
         this.setState({
-            titleFilter: text
+            titleFilter: text.toLowerCase()
         });
-        this.filterByTitle();
+        this.filterByTitle(text);
     }
 
-    filterByTitle = () => {
+    filterByTitle = (text) => {
         let filteredArticles = this.state.articles.filter(article => {
-            return article.title.includes(this.state.titleFilter);
+            return article.title.toLowerCase().includes(text.toLowerCase());
         });
         this.setState({
-            articles: filteredArticles
+            filteredArticles: filteredArticles
         });
     }
 
@@ -54,11 +60,11 @@ class ArticleList extends Component {
         return (
             <>
                 <div className="m2">
-                    <TitleFilter onChange={this.handleChange} />
+                    <TitleFilter onChange={this.handleChange} value={this.state.titleFilter}/>
                     <SourceFilter />
                 </div>
                 <div className="flex flex-wrap">
-                    {this.state.articles.map((article, index) => {
+                    {this.state.filteredArticles.map((article, index) => {
                         return <Article key={index} 
                                         title={article.title} 
                                         url={article.url}
