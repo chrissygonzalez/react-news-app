@@ -1,11 +1,15 @@
 import React from 'react';
 
-const SourceFilter = () => {
+const SourceFilter = (props) => {
     return(
-        <>
-            <label for="sources">Only show articles from</label>
-            <select name="sources"></select>
-        </>
+        <form>
+            <label>
+                Only show articles from
+                <select>
+                    {props.sources.map(source => <option value="source"> {source} </option>)}
+                </select>
+            </label>
+        </form>
     );
 };
 

@@ -4,7 +4,7 @@ const TitleFilter = (props) => {
     return (
         <input  type="text" 
                 className="mr2" 
-                placeholder="Filter title by keyword" 
+                placeholder="Filter by title" 
                 onChange={e => props.onChange(e.target.value) }
                 value={props.value}
                 />

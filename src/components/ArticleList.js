@@ -11,7 +11,7 @@ class ArticleList extends Component {
         sources: []
     };
 
-    getNews() {
+    getNews = () => {
         let url = 'http://newsapi.org/v2/top-headlines?' +
           'country=us&' +
           'apiKey=b73f9bef4534497e9cf7d95fb6e945ed';
@@ -61,7 +61,7 @@ class ArticleList extends Component {
             <>
                 <div className="m2">
                     <TitleFilter onChange={this.handleChange} value={this.state.titleFilter}/>
-                    <SourceFilter />
+                    <SourceFilter sources={this.state.sources} />
                 </div>
                 <div className="flex flex-wrap">
                     {this.state.filteredArticles.map((article, index) => {
