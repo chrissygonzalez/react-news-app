@@ -8,7 +8,8 @@ class ArticleList extends Component {
         articles: [],
         filteredArticles: [],
         titleFilter: '',
-        sources: []
+        sources: [],
+        selectedSource: ''
     };
 
     getNews = () => {
@@ -36,16 +37,23 @@ class ArticleList extends Component {
         })
     };
 
-    handleChange = (text) => {
+    handleInputChange = (text) => {
         this.setState({
             titleFilter: text.toLowerCase()
         });
-        this.filterByTitle(text);
+        this.filterArticles(text, this.state.selectedSource);
     }
 
-    filterByTitle = (text) => {
+    handleSelectChange = (val) => {
+        this.setState({
+            selectedSource: val
+        });
+        this.filterArticles(this.state.titleFilter, val);
+    }
+
+    filterArticles = (text, source) => {
         let filteredArticles = this.state.articles.filter(article => {
-            return article.title.toLowerCase().includes(text.toLowerCase());
+            return article.title.toLowerCase().includes(text.toLowerCase()) && article.source.name.includes(source);
         });
         this.setState({
             filteredArticles: filteredArticles
@@ -59,9 +67,9 @@ class ArticleList extends Component {
     render() {
         return (
             <>
-                <div className="m2">
-                    <TitleFilter onChange={this.handleChange} value={this.state.titleFilter}/>
-                    <SourceFilter sources={this.state.sources} />
+                <div className="m2 flex">
+                    <TitleFilter onChange={this.handleInputChange} value={this.state.titleFilter}/>
+                    <SourceFilter sources={this.state.sources} onChange={this.handleSelectChange} value={this.state.selectedSource} />
                 </div>
                 <div className="flex flex-wrap">
                     {this.state.filteredArticles.map((article, index) => {
